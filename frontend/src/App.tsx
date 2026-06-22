@@ -257,40 +257,64 @@ export default function App() {
           </div>
 
           <div style={{ borderTop: '1px solid var(--border-light)', paddingTop: '1.25rem' }}>
-            <div className="sidebar-title">Ingest Raw Touchpoint</div>
-            <form onSubmit={handleIngest} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <input
-                type="email"
-                placeholder="customer@email.com"
-                value={customEmail}
-                onChange={e => setCustomEmail(e.target.value)}
-                style={{ padding: '0.5rem', borderRadius: '6px', border: '1px solid var(--border-light)', fontSize: '0.85rem' }}
-                required
-              />
-              <select
-                value={customEvent}
-                onChange={e => setCustomEvent(e.target.value)}
-                style={{ padding: '0.5rem', borderRadius: '6px', border: '1px solid var(--border-light)', fontSize: '0.85rem' }}
-              >
-                <option value="cart_abandonment">Cart Abandonment</option>
-                <option value="page_view">Web Page View</option>
-                <option value="zero_party_survey">Zero Party Survey</option>
-              </select>
-              <input
-                type="text"
-                placeholder="Product (e.g. Sports Watch)"
-                value={customInterest}
-                onChange={e => setCustomInterest(e.target.value)}
-                style={{ padding: '0.5rem', borderRadius: '6px', border: '1px solid var(--border-light)', fontSize: '0.85rem' }}
-              />
-              <input
-                type="number"
-                placeholder="Value (£)"
-                value={customPrice}
-                onChange={e => setCustomPrice(e.target.value)}
-                style={{ padding: '0.5rem', borderRadius: '6px', border: '1px solid var(--border-light)', fontSize: '0.85rem' }}
-              />
-              <button type="submit" className="btn btn-primary" style={{ width: '100%' }} disabled={isIngesting || isRunning}>
+            <div className="sidebar-title" style={{ marginBottom: '1rem' }}>Ingest Raw Touchpoint</div>
+            <form onSubmit={handleIngest} style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <label style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.025em', marginBottom: '4px' }}>
+                  Customer Email
+                </label>
+                <input
+                  type="email"
+                  placeholder="customer@email.com"
+                  value={customEmail}
+                  onChange={e => setCustomEmail(e.target.value)}
+                  style={{ padding: '0.5rem', borderRadius: '6px', border: '1px solid var(--border-light)', fontSize: '0.85rem' }}
+                  required
+                />
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <label style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.025em', marginBottom: '4px' }}>
+                  User Action / Event
+                </label>
+                <select
+                  value={customEvent}
+                  onChange={e => setCustomEvent(e.target.value)}
+                  style={{ padding: '0.5rem', borderRadius: '6px', border: '1px solid var(--border-light)', fontSize: '0.85rem' }}
+                >
+                  <option value="cart_abandonment">Cart Abandonment</option>
+                  <option value="page_view">Web Page View</option>
+                  <option value="zero_party_survey">Zero Party Survey</option>
+                </select>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <label style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.025em', marginBottom: '4px' }}>
+                  Product Category Interest
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. Premium Running Shoes"
+                  value={customInterest}
+                  onChange={e => setCustomInterest(e.target.value)}
+                  style={{ padding: '0.5rem', borderRadius: '6px', border: '1px solid var(--border-light)', fontSize: '0.85rem' }}
+                />
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <label style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.025em', marginBottom: '4px' }}>
+                  Event Value (£)
+                </label>
+                <input
+                  type="number"
+                  placeholder="e.g. 150"
+                  value={customPrice}
+                  onChange={e => setCustomPrice(e.target.value)}
+                  style={{ padding: '0.5rem', borderRadius: '6px', border: '1px solid var(--border-light)', fontSize: '0.85rem' }}
+                />
+              </div>
+
+              <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '0.25rem' }} disabled={isIngesting || isRunning}>
                 {isIngesting ? 'Ingesting...' : 'Ingest & Stitch'}
               </button>
             </form>
