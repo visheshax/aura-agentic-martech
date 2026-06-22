@@ -83,7 +83,7 @@ class IdentityStitchingAgent:
         }
 
         # Save profile
-        self.db.table("customer_profiles").upsert(profile_data, on_conflict="email")
+        self.db.table("customer_profiles").upsert(profile_data, on_conflict="email").execute()
         logs.append(f"✅ [Identity Agent] Successfully updated C360 Customer Profile for {email}")
 
         return {

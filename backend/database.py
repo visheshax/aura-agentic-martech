@@ -155,6 +155,8 @@ class MockQuery:
 class MockResponse:
     def __init__(self, data: Any):
         self.data = data
+    def execute(self):
+        return self
 
 # Initialize the real or mock database client
 db_client = None

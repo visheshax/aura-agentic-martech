@@ -167,7 +167,7 @@ class CampaignOrchestrator:
             }
             
             # Save campaign entry
-            self.db.table("campaign_logs").insert(campaign_data)
+            self.db.table("campaign_logs").insert(campaign_data).execute()
             
             yield self._format_stream_event("step_complete", {
                 "step": "PERSISTENCE",

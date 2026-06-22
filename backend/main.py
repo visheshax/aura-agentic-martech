@@ -55,7 +55,7 @@ def ingest_touchpoint(req: IngestRequest):
         "event_data": req.event_data
     }
     
-    db.table("raw_customer_touchpoints").insert(touchpoint_data)
+    db.table("raw_customer_touchpoints").insert(touchpoint_data).execute()
     
     # Trigger Identity Stitching Agent on the fly
     agent = IdentityStitchingAgent()
