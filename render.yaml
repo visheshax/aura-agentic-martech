@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: aura-agentic-martech
+    env: python
+    buildCommand: "cd frontend && npm install && npm run build && cd ../backend && pip install -r requirements.txt"
+    startCommand: "cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.0
+      - key: SUPABASE_URL
+        value: your_supabase_url
+      - key: SUPABASE_KEY
+        value: your_supabase_key
+      - key: OPENAI_API_KEY
+        value: your_openai_api_key
