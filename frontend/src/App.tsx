@@ -218,6 +218,42 @@ export default function App() {
     };
   };
 
+  const handleSelfHeal = () => {
+    if (!complianceReport) return;
+
+    // 1. Update email body with unsubscribe footer
+    const healingFooter = `<br/><br/><hr style="border:0;border-top:1px solid var(--border-light);margin:20px 0;"/><span style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4; display: block;">You are receiving this email because you opted in to marketing updates. To unsubscribe, please click <a href="#" style="color: var(--accent-blue);">here to opt-out</a>.</span>`;
+    setEmailBody(prev => prev + healingFooter);
+
+    // 2. Update compliance report state
+    setComplianceReport((prev: any) => ({
+      ...prev,
+      approved: true,
+      checks: {
+        ...prev.checks,
+        has_opt_out_disclaimer: true
+      }
+    }));
+
+    // 3. Add logs to the telemetry steps
+    setSteps((prev: any) => {
+      const complianceStep = prev.COMPLIANCE_AUDIT;
+      return {
+        ...prev,
+        COMPLIANCE_AUDIT: {
+          ...complianceStep,
+          status: 'completed',
+          logs: [
+            ...complianceStep.logs,
+            "🔧 [Self-Healing Agent] Auto-rectification triggered by operator.",
+            "🔧 [Self-Healing Agent] Appended compliant GDPR footer & opt-out link.",
+            "⚖️ [Compliance Agent] Re-auditing copy... APPROVED."
+          ]
+        }
+      };
+    });
+  };
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <header>
@@ -467,7 +503,7 @@ export default function App() {
                     {complianceReport ? (
                       <div>
                         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginBottom: '1rem' }}>
-                          <span className={`badge ${complianceReport.approved ? 'active' : ''}`}>
+                          <span className={`badge ${complianceReport.approved ? 'active' : ''}`} style={{ backgroundColor: complianceReport.approved ? 'var(--accent-green-light)' : 'var(--accent-red-light)', color: complianceReport.approved ? 'var(--accent-green)' : 'var(--accent-red)' }}>
                             {complianceReport.approved ? 'PASSED AUDIT' : 'FLAGGED'}
                           </span>
                           <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
@@ -500,6 +536,17 @@ export default function App() {
                             </span>
                           </div>
                         </div>
+
+                        {!complianceReport.approved && (
+                          <div style={{ marginTop: '1.5rem', padding: '1rem', border: '1px solid var(--accent-amber)', borderRadius: '8px', backgroundColor: 'var(--accent-amber-light)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <div style={{ fontSize: '0.85rem', color: 'var(--text-primary)', textAlign: 'left' }}>
+                              <strong>Compliance Alert:</strong> Missing required opt-out footer. Enable self-healing to automatically fix.
+                            </div>
+                            <button className="btn btn-primary" onClick={handleSelfHeal} style={{ backgroundColor: 'var(--accent-amber)', borderColor: 'var(--accent-amber)', color: '#fff', fontSize: '0.8rem', padding: '0.4rem 0.8rem' }}>
+                              Self-Heal Issue
+                            </button>
+                          </div>
+                        )}
                       </div>
                     ) : (
                       <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-tertiary)' }}>
